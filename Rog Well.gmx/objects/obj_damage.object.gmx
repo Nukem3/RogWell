@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>/// Initialize the damage object
 damage = 10;
-knockback = 30;
+knockback = 20;
 creator = noone;
 alarm[0] = 1;
 </string>
@@ -83,7 +83,7 @@ instance_destroy();
         </arguments>
       </action>
     </event>
-    <event eventtype="4" ename="obj_player">
+    <event eventtype="4" ename="obj_lifeform_parent">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -101,20 +101,15 @@ instance_destroy();
           <argument>
             <kind>1</kind>
             <string>/// Give Mana when hitting enemy
-if (other.id != creator) {
-    other.hp -= damage;
-    if(creator.mana &lt;= 100) {
-        creator.mana += 10;
+if (other.id != creator &amp;&amp; instance_exists(creator)) {
+    obj_player_stats.hp -= damage-9; 
+    // Apply the knockback
+    var dir = point_direction(creator.x, creator.y, obj_player_stats.x, obj_player_stats.y);
+    var xforce = lengthdir_x(knockback, dir);
+    var yforce = lengthdir_y(knockback, dir);
+    with (other) {
+        physics_apply_impulse(x, y, xforce, yforce);
     }
-    
-            // Knockback System
-        // Apply the knockback
-        var dir = point_direction(creator.x, creator.y, other.x, other.y);
-        var xforce = lengthdir_x(knockback, dir);
-        var yforce = lengthdir_y(knockback, dir);
-        with (other) {
-            physics_apply_impulse(x, y, xforce, yforce);
-        }
 }
 </string>
           </argument>
@@ -139,10 +134,54 @@ if (other.id != creator) {
           <argument>
             <kind>1</kind>
             <string>/// Give Mana when hitting enemy
+
+stats = obj_player_stats;
+
 if (other.id != creator) {
     other.hp -= damage+75;
-        if(creator.mana &lt;= 100) {
-        creator.mana += 5;
+        if(stats.mana &lt;= 100) {
+        stats.mana += 5;
+    }
+        
+            // Knockback System
+        // Apply the knockback
+        var dir = point_direction(creator.x, creator.y, other.x, other.y);
+        var xforce = lengthdir_x(knockback, dir);
+        var yforce = lengthdir_y(knockback, dir);
+        with (other) {
+            physics_apply_impulse(x, y, xforce, yforce);
+        }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="obj_enemy_ghost">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>/// Give Mana when hitting enemy
+
+stats = obj_player_stats;
+
+if (other.id != creator) {
+    other.hp -= damage+15;
+        if(stats.mana &lt;= 100) {
+        stats.mana += 15;
     }
         
             // Knockback System
@@ -177,10 +216,13 @@ if (other.id != creator) {
           <argument>
             <kind>1</kind>
             <string>/// Give Mana when hitting enemy
+
+stats = obj_player_stats;
+
 if (other.id != creator) {
     other.hp -= damage + 35;
-    if(creator.mana &lt;= 100) {
-        creator.mana += 10;
+    if(stats.mana &lt;= 100) {
+       stats.mana += 10;
     }
     
             // Knockback System

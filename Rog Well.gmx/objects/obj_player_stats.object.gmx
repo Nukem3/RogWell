@@ -4,7 +4,7 @@
   <solid>0</solid>
   <visible>-1</visible>
   <depth>0</depth>
-  <persistent>0</persistent>
+  <persistent>-1</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
@@ -25,9 +25,16 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/// Initialize lifeform
-phy_fixed_rotation = true;
-hp = 100;
+            <string>/// Initialize the player's stats
+hp = 5;
+maxhp = hp;
+
+mana = 10;
+maxmana = mana;
+
+level = 1;
+expr = 0;
+maxexpr = 10;
 </string>
           </argument>
         </arguments>
@@ -50,19 +57,16 @@ hp = 100;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>/// Control depth
-depth = -y;
-if (hp &lt;= 0) {
-    global.kills += 1;
-    global.entitys -= 1;
-    instance_destroy();
+            <string>/// Control the stats
+if (hp &lt; 0) {
+    hp = 0;
 }
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="4" ename="obj_lifeform_parent">
+    <event eventtype="8" enumb="64">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -79,65 +83,20 @@ if (hp &lt;= 0) {
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///Collide
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="obj_wall">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///Collide
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="8" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>draw_self();
-if(instance_exists(obj_enemy_bat)) {
-    with(obj_enemy_bat)
-        draw_healthbar(x-8, y+1, x+8, y-1, obj_enemy_bat.hp, c_black, c_red, c_green, 0, false, false);
-}
+            <string>/// Draw the stats
+if (instance_exists(obj_player)) {
+draw_set_font(fnt_stats);
+draw_set_colour(c_black);
+draw_text(0, 475, "HP: " + string(hp) + "/" + string(maxhp));
+draw_text(0, 490, "MANA: " + string(mana) + "/" + string(maxmana));
+draw_text(0, 505, "LEVEL: " + string(level));
+draw_text(0, 520, "EXP: " + string(expr) + "/" + string(maxexpr));
 
-if(instance_exists(obj_enemy_demon)) {
-    with(obj_enemy_demon)
-        draw_healthbar(x-8, y+2, x+10, y-2, hp, c_black, c_red, c_green, 0, false, true);
-}
-if(instance_exists(obj_enemy_ghost)) {
-    with(obj_enemy_ghost)
-        draw_healthbar(x-8, y+2, x+10, y-2, hp, c_black, c_red, c_green, 0, false, true);
+// Draw debug
+draw_set_font(fnt_gui);
+draw_text(45, 0, "E: " + string(global.entitys));
+//draw_text(450, 5, "Enemys killed: " + string(global.kills));
+
 }
 </string>
           </argument>

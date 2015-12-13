@@ -25,7 +25,7 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>alarm[0] = random(250);
+            <string>alarm[0] = room_speed * 6;
 global.entitys = 0;
 </string>
           </argument>
@@ -51,14 +51,9 @@ global.entitys = 0;
             <kind>1</kind>
             <string>/// timer
 pp = obj_player;
-
-alarm[0] = random(250);
-
 if(instance_exists(obj_player)){
-// Add demon
-instance_create(choose(pp.x+150,pp.x-150,pp.x+200,pp.x-200), choose(pp.y+200,pp.y-200,pp.y+150,pp.y-150), obj_enemy_demon);
-// Add bat
-instance_create(choose(pp.x+150,pp.x-150,pp.x+200,pp.x-200), choose(pp.y+200,pp.y-200,pp.y+150,pp.y-150), obj_enemy_bat);
+    instance_create(choose(pp.x+150, pp.x-150), choose(pp.y+150, pp.y-150), choose(obj_enemy_demon, obj_enemy_ghost, obj_enemy_bat));
+    alarm[0] = room_speed * 6;
 }
 </string>
           </argument>
@@ -82,38 +77,9 @@ instance_create(choose(pp.x+150,pp.x-150,pp.x+200,pp.x-200), choose(pp.y+200,pp.
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if(global.entitys &gt; 21) {
-    alarm[0] = random(385);
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="8" enumb="64">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>draw_set_font(fnt_small);
-draw_set_color(c_black);
-draw_text(320, 10, "E: " + string(global.entitys));
-if(!instance_exists(obj_player)) {
-    draw_set_font(fnt_default);
-    draw_set_colour(c_red);
-    draw_text(room_width/6, room_height/6, "Your died.");
+            <string>/// Control 
+if (global.entitys &gt; 20) {
+    alarm[0] = room_speed * 10;
 }
 </string>
           </argument>

@@ -6,9 +6,9 @@
   <NewExtensions/>
   <sounds name="sound">
     <sound>sound\snd_dash</sound>
+    <sound>sound\snd_swing_sword</sound>
   </sounds>
   <sprites name="sprites">
-    <sprite>sprites\spr_wall</sprite>
     <sprites name="Player">
       <sprite>sprites\spr_player_shadow</sprite>
       <sprites name="Attack">
@@ -30,9 +30,17 @@
     <sprites name="Enemys">
       <sprite>sprites\spr_demon</sprite>
       <sprite>sprites\spr_enemy_bat</sprite>
+      <sprite>sprites\spr_ghost</sprite>
     </sprites>
-    <sprite>sprites\spr_damage</sprite>
-    <sprite>sprites\spr_restart</sprite>
+    <sprites name="Tiles">
+      <sprite>sprites\spr_expr</sprite>
+      <sprite>sprites\spr_wall</sprite>
+    </sprites>
+    <sprites name="Imgs">
+      <sprite>sprites\spr_restart</sprite>
+      <sprite>sprites\spr_damage</sprite>
+      <sprite>sprites\spr_gameover</sprite>
+    </sprites>
   </sprites>
   <backgrounds name="background">
     <background>background\bg_grass</background>
@@ -62,10 +70,13 @@
   <fonts name="fonts">
     <font>fonts\fnt_default</font>
     <font>fonts\fnt_small</font>
+    <font>fonts\fnt_gui</font>
+    <font>fonts\fnt_stats</font>
   </fonts>
   <objects name="objects">
     <objects name="Enemys">
       <object>objects\obj_enemy_demon</object>
+      <object>objects\obj_enemy_ghost</object>
       <object>objects\obj_enemy_bat</object>
     </objects>
     <objects name="Systems">
@@ -73,18 +84,24 @@
       <object>objects\obj_view</object>
       <object>objects\obj_lifeform_parent</object>
       <object>objects\obj_spawning_system</object>
+      <object>objects\obj_gameover</object>
     </objects>
     <objects name="Player">
       <object>objects\obj_player</object>
       <object>objects\obj_dash_effect</object>
+      <object>objects\obj_player_stats</object>
     </objects>
     <objects name="Damages">
       <object>objects\obj_damage</object>
       <object>objects\obj_super_attack_damage</object>
     </objects>
+    <objects name="Tiles">
+      <object>objects\obj_expr</object>
+    </objects>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_test</room>
+    <room>rooms\rm_gameover</room>
   </rooms>
   <help>
     <rtf>help.rtf</rtf>

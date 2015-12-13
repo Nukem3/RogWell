@@ -41,7 +41,6 @@ image_speed = 0;
 scr_get_input();
 state = scr_move_state;
 face = RIGHT;
-mana = 100;
 </string>
           </argument>
         </arguments>
@@ -89,12 +88,58 @@ state = scr_move_state;
           <argument>
             <kind>1</kind>
             <string>/// Move the player in the step event
-event_inherited();
+depth = -y;
 script_execute(state);
 
-// Check if Mana reaches 105
-if (mana &gt;= 105) {
-    mana = 100;
+if (obj_player_stats.mana &gt; obj_player_stats.maxmana) {
+    obj_player_stats.mana = obj_player_stats.maxmana;
+}
+
+// Check for death
+if (obj_player_stats.hp &lt;= 0) {
+    instance_destroy();
+    room_goto(rm_gameover);
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="obj_expr">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>//Collect EXPR
+with (other) 
+    instance_destroy() {
+    
+}
+with (obj_player_stats) {
+    expr += 1;
+    if (expr &gt;= maxexpr) {
+        level += 1;
+        expr = expr-maxexpr;
+        maxexpr *= 2;
+        
+        maxhp += 5;
+        hp = maxhp;
+        
+        maxmana += 10;
+        mana = maxmana;
+    }    
 }
 </string>
           </argument>
@@ -149,35 +194,6 @@ if (state == scr_attack_state) {
     state = scr_move_state;
     attacked = false;
 }
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="8" enumb="64">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>draw_set_font(fnt_small);
-draw_set_colour(c_black);
-draw_text(5, 520, "Enemys killed: " + string(global.kills));
-draw_set_colour(c_red);
-draw_text(880, 0, "HP: " + string(hp) + "/100");
-draw_set_color(c_aqua);
-draw_text(865, 20, "MANA: " + string(mana) + "/100");
 </string>
           </argument>
         </arguments>
